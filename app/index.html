@@ -24,14 +24,14 @@
             <div class="controls">
                 <div>
                     <input id="inpt_trackOrAlbum" type="text" placeholder="Bandcamp track/album URL">
-                    <button onClick="getTrackOrAlbum()">Fetch track(s)</button>
-                    <button onClick="savePlaylist()">Save playlist (locally)</button>
-                    <button onClick="shufflePlaylist()">Shuffle</button>
-                    <button onClick="clearPlaylist()">Clear playlist</button>
+                    <button onClick="Campground.getTrackOrAlbum()">Fetch track(s)</button>
+                    <button onClick="Campground.savePlaylist()">Save playlist (locally)</button>
+                    <button onClick="Campground.shufflePlaylist()">Shuffle</button>
+                    <button onClick="Campground.clearPlaylist()">Clear playlist</button>
                 </div>
                 <div>
-                    <button id="btn_playPause" onClick="playPause()">Play</button>
-                    <button onClick="nextTrack()">Next track</button>
+                    <button id="btn_playPause" onClick="Campground.playPause()">Play</button>
+                    <button onClick="Campground.nextTrack()">Next track</button>
                 </div>
                 <div>
                     <span class="status" id="statusMessage"></span>
@@ -45,7 +45,7 @@
                     <div class="title">{{ track_title }}</div>
                     <div class="band"><a href="{{ band_url }}">{{ band_name }}</a></div>
                     <div class="album"><a href="{{ album_url }}">{{ album_title }}</a></div>
-                    <audio src="{{ track_streaming_url }}" controls preload="none">
+                    <audio src="{{ track_streaming_url }}" controls preload="none" onend="Campground.nextTrack()">
                         <p>Your browser doesn't seem to support the HTML5 audio element</p>
                     </audio>
                 </article>
@@ -55,6 +55,7 @@
         <!-- build:js scripts/vendor.js -->
         <!-- bower:js -->
         <script src="../bower_components/jquery/dist/jquery.js"></script>
+        <script src="../bower_components/handlebars/handlebars.js"></script>
         <!-- endbower -->
         <!-- endbuild -->
 
@@ -73,6 +74,11 @@
         <script src="scripts/campground.js"></script>
         <!-- endbuild -->
 
-        <script>loadPlaylist();</script>
+        <script>
+        $(document).ready(function(){
+            Object.observe(Campground.playlist, Campground.renderPlaylist.bind(Campground));
+            Campground.loadPlaylist();
+        });
+        </script>
 </body>
 </html>
