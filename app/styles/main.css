@@ -1,8 +1,83 @@
 body{
     font-family: sans-serif;
 }
+header.main h1{
+    position: absolute;
+    width: 100%;
+    font-family: 'Segoe UI', sans-serif;
+    text-transform: uppercase;
+    z-index: -5;
+    opacity: 0.08;
+    font-weight: 100;
+    text-align: center;
+    transform: scale(3.5) translateY(4px);
+}
+.container{
+    padding-top: 96px;
+    width: 60%;
+    min-width: 480px;
+    max-width: 640px;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+}
 .status{
     display: block;
     font-size: 0.8em;
     opacity: 0.5;
+}
+.controls{
+    text-align: center;
+}
+.status:before{
+    content: 'Status: ';
+}
+.controls .static{
+    position: fixed;
+    top: 96px;
+    right: 0;
+
+    background: hsl(100, 70%, 60%);
+    padding: 4px;
+
+    z-index: 5;
+}
+.playlist{
+    margin-top: 2em;
+}
+.playlist .track{
+    height: 96px;
+    display: block;
+    overflow: hidden;
+
+    opacity: 0.35;
+}
+.playlist .title{
+    font-size: 1.8em;
+}
+.playlist .album:before{
+    content: 'Album';
+}
+.playlist .band:before{
+    content: 'Band';
+}
+.playlist .album:before, .playlist .band:before{
+    opacity: 0.5;
+    display: inline-block;
+    width: 4em;
+}
+.playlist .track .art{
+    height: 100%;
+    max-width: 96px;
+    float: left;
+    margin-right: 1em;
+}
+.playlist .track audio{
+    display: none;
+}
+.playlist .track.playing{
+    background: hsl(100, 70%, 90%);
+}
+.playlist .track.playing{
+    opacity: 1;
 }

@@ -17,6 +17,8 @@
     "strict": true,
     "trailing": true,
     "smarttabs": true,
+    "loopfunc": true,
+    "expr": true,
     "jquery": true,
     "predef": ["Handlebars"]
 }

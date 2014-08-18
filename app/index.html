@@ -11,6 +11,9 @@
         <!-- bower:css -->
         <!-- endbower -->
         <!-- endbuild -->
+
+        <script src="../bower_components/handlebars/handlebars.min.js"></script>
+
         <!-- build:css(.tmp) styles/main.css -->
         <link rel="stylesheet" href="styles/main.css">
         <!-- endbuild -->
@@ -20,42 +23,46 @@
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
+        <header class="main">
+            <h1>Campground</h1>
+        </header>
         <div class="container">
             <div class="controls">
                 <div>
-                    <input id="inpt_trackOrAlbum" type="text" placeholder="Bandcamp track/album URL">
+                    <input id="inpt_trackOrAlbum" type="text" onkeyup="Campground.clearStatus()" placeholder="Bandcamp track/album URL">
                     <button onClick="Campground.getTrackOrAlbum()">Fetch track(s)</button>
-                    <button onClick="Campground.savePlaylist()">Save playlist (locally)</button>
+                    <span class="status" id="statusMessage">Enter a URL</span>
+                </div>
+                <div>
                     <button onClick="Campground.shufflePlaylist()">Shuffle</button>
                     <button onClick="Campground.clearPlaylist()">Clear playlist</button>
                 </div>
-                <div>
+                <div class="static">
                     <button id="btn_playPause" onClick="Campground.playPause()">Play</button>
                     <button onClick="Campground.nextTrack()">Next track</button>
-                </div>
-                <div>
-                    <span class="status" id="statusMessage"></span>
                 </div>
             </div>
 
             <div class="playlist"></div>
-            <script id="trackTemplate" type="text/x-handlebars-template">
+
+            <template id="trackTemplate">
                 <article class="track" data-trackid="{{ track_id }}">
-                    <img src="{{ album_art_small_url }}" />
+                    <img class="art" src="{{ album_art_small_url }}" />
                     <div class="title">{{ track_title }}</div>
-                    <div class="band"><a href="{{ band_url }}">{{ band_name }}</a></div>
-                    <div class="album"><a href="{{ album_url }}">{{ album_title }}</a></div>
-                    <audio src="{{ track_streaming_url }}" controls preload="none" onend="Campground.nextTrack()">
+                    <div>
+                        by <a href="{{ band_url }}">{{ band_name }}</a> on album <a href="{{ album_url }}">{{ album_title }}</a>
+                    </div>
+                    <audio src="{{ track_streaming_url }}" controls preload="none" onEnded="Campground.nextTrack()">
                         <p>Your browser doesn't seem to support the HTML5 audio element</p>
                     </audio>
                 </article>
-            </script>
+            </template>
+
         </div>
 
         <!-- build:js scripts/vendor.js -->
         <!-- bower:js -->
         <script src="../bower_components/jquery/dist/jquery.js"></script>
-        <script src="../bower_components/handlebars/handlebars.js"></script>
         <!-- endbower -->
         <!-- endbuild -->
 

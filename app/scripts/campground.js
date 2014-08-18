@@ -87,6 +87,9 @@ var Campground = {
             });
         }
     },
+    clearStatus: function(){
+        $('#statusMessage').html('Enter a URL');
+    },
     loadPlaylist: function(){
         var savedPlaylist = JSON.parse(localStorage.playlist || '[]');
         if(savedPlaylist.length < 1){
@@ -113,27 +116,25 @@ var Campground = {
         if(this.currentTrackId === null){
             this.currentTrackId = this.playlist[0].track_id;
         }
-        $('[data-trackid="'+this.currentTrackId+'"] audio')[0].play();
+        var currentTrackElement = $('[data-trackid="'+this.currentTrackId+'"]');
+        currentTrackElement.children('audio')[0].play();
+        currentTrackElement.addClass('playing');
+        $('#btn_playPause').html('Pause');
     },
     pause: function(){
         this.isPlaying = false;
         $('audio').each(function(){
             this.pause();
         });
+        $('#btn_playPause').html('Play');
     },
     playPause: function(){
-        if(!this.isPlaying){
-            $('#btn_playPause').html('Pause');
-            this.play();
-
-        }else{
-            $('#btn_playPause').html('Play');
-            this.pause();
-        }
+        this.isPlaying ? this.pause() : this.play();
     },
     nextTrack: function(){
         // get key of current track
         console.log('nextTrack');
+        $('.playing').removeClass('playing');
         for(var k in this.playlist){
             k = parseInt(k);
             if(this.playlist[k].track_id === this.currentTrackId){
@@ -147,27 +148,31 @@ var Campground = {
         }
     },
     shufflePlaylist: function(){
+        this.pause();
         this.playlist.shuffle();
+        this.currentTrackId = null;
     },
     addAlbumToPlaylist: function(album_id, bandData){
         //console.log('Adding album to playlist', album_id, bandData);
         // get album data
+        var that = this;
         this.api.getAlbumData(album_id, function(albumData){
             albumData.tracks.forEach(function(trackData){
-                this.playlist.push(new Track(trackData, albumData, bandData));
+                that.playlist.push(new Track(trackData, albumData, bandData));
             });
-        });
+        }.bind(that));
     },
 
     addTrackToPlaylist: function(track_id, bandData){
         //console.log('Adding track to playlist', track_id, bandData);
         // get track data
+        var that = this;
         this.api.getTrackData(track_id, function(trackData){
             // get album data
             this.api.getAlbumData(trackData.album_id, function(albumData){
                 this.playlist.push(new Track(trackData, albumData, bandData));
             });
-        });
+        }.bind(that));
     },
     getTrackOrAlbum: function(){
         var str = $('#inpt_trackOrAlbum').val().trim();
@@ -180,19 +185,21 @@ var Campground = {
                     }else if(urlData.track_id){
                         this.addTrackToPlaylist(urlData.track_id, bandData);
                     }
-                });
+                }.bind(this));
             }else{
                 $('#statusMessage').html('Bandcamp rejected the URL');
             }
-        });
+        }.bind(this));
     },
     renderPlaylist: function(){
+        this.clearStatus();
         $('.playlist').html('');
 
-        for(var k in this.playlist){
-            var track = this.playlist[k];
+        this.playlist.forEach(function(track){
             var compiledTrack = Handlebars.compile($('#trackTemplate').html())(track);
             $('.playlist').append(compiledTrack);
-        }
+        });
+
+        this.savePlaylist();
     }
 };
