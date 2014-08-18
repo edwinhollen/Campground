@@ -104,9 +104,12 @@ var Campground = {
         localStorage.playlist = JSON.stringify(this.playlist);
     },
     clearPlaylist: function(){
-        while(this.playlist.length > 0){
-            this.playlist.pop();
+        if(window.confirm('Do you really want to clear the playlist?')){
+            while(this.playlist.length > 0){
+                this.playlist.pop();
+            }
         }
+
     },
     play: function(){
         this.isPlaying = true;
