@@ -29,7 +29,7 @@
         <div class="container">
             <div class="controls">
                 <div>
-                    <input id="inpt_trackOrAlbum" type="text" onkeyup="Campground.clearStatus()" placeholder="Bandcamp track/album URL">
+                    <input id="inpt_trackOrAlbum" type="text"  placeholder="Bandcamp track/album URL">
                     <button onClick="Campground.getTrackOrAlbum()">Fetch track(s)</button>
                 </div>
                 <div>
@@ -58,6 +58,16 @@
                 </article>
             </template>
 
+            <footer class="main">
+                <p>Campground is free and open-source.</p>
+                <p>Designed and developed <span class="fancy">with love</span> by Edwin Hollen.</p>
+                <p>
+                    <a href="https://github.com/edwinhollen/Campground">Campground on Github</a>
+                    -
+                    <!-- donation link -->
+                    <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=WG29YXBCC32C8&lc=US&item_name=Edwin%20Hollen&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted">Donate</a>
+                    </p>
+            </footer>
         </div>
 
         <!-- build:js scripts/vendor.js -->

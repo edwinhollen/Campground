@@ -128,6 +128,14 @@ var Campground = {
     playPause: function(){
         this.isPlaying ? this.pause() : this.play();
     },
+    removeTrack: function(track_id){
+        for(var k in this.playlist){
+            if(this.playlist[k].track_id === track_id){
+                this.playlist.splice(k, 1);
+                return;
+            }
+        }
+    },
     nextTrack: function(){
         // get key of current track
         console.log('nextTrack');

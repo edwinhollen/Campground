@@ -7,11 +7,21 @@ body{
 header.main h1{
     text-align: center;
     font-family: 'Sanchez', sans-serif;
-    color: hsl(260, 60%, 50%);
+    color: hsl(260, 8%, 38%);
     font-weight: 100;
     letter-spacing: 2em;
     text-transform: uppercase;
     font-size: 1em;
+}
+footer.main{
+    text-align: center;
+    opacity: 0.5;
+    border-top: white 1px solid;
+    margin-top: 2em;
+}
+.fancy{
+    font-family: 'Georgia', serif;
+    font-style: italic;
 }
 a{
     color: inherit;
