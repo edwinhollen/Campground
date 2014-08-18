@@ -1,25 +1,27 @@
+*{box-sizing:border-box;}
 body{
     font-family: sans-serif;
+    background: hsl(260, 8%, 18%);
+    color: white;
 }
 header.main h1{
-    position: absolute;
-    width: 100%;
-    font-family: 'Segoe UI', sans-serif;
-    text-transform: uppercase;
-    z-index: -5;
-    opacity: 0.08;
-    font-weight: 100;
     text-align: center;
-    transform: scale(3.5) translateY(4px);
+    font-family: 'Sanchez', sans-serif;
+    color: hsl(260, 60%, 50%);
+    font-weight: 100;
+    letter-spacing: 2em;
+    text-transform: uppercase;
+    font-size: 1em;
+}
+a{
+    color: inherit;
 }
 .container{
-    padding-top: 96px;
     width: 60%;
     min-width: 480px;
     max-width: 640px;
     margin: 0 auto;
     position: relative;
-    overflow: hidden;
 }
 .status{
     display: block;
@@ -46,14 +48,17 @@ header.main h1{
     margin-top: 2em;
 }
 .playlist .track{
-    height: 96px;
+    position: relative;
+    height: 72px;
     display: block;
     overflow: hidden;
-
+    padding: 8px;
     opacity: 0.35;
 }
 .playlist .title{
-    font-size: 1.8em;
+    font-size: 1.2em;
+    font-family: 'Sanchez', sans-serif;
+    font-weight: 100;
 }
 .playlist .album:before{
     content: 'Album';
@@ -68,15 +73,25 @@ header.main h1{
 }
 .playlist .track .art{
     height: 100%;
-    max-width: 96px;
     float: left;
     margin-right: 1em;
+}
+.playlist .track .remove{
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 2em;
+    cursor: pointer;
+    opacity: 0.5;
 }
 .playlist .track audio{
     display: none;
 }
 .playlist .track.playing{
-    background: hsl(100, 70%, 90%);
+    background: hsl(100, 50%, 33%);
+    border-radius: 2px;
+    box-shadow: hsla(0,0%,0%,0.2) 0 0 24px;
 }
 .playlist .track.playing{
     opacity: 1;

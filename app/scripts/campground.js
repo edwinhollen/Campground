@@ -47,7 +47,7 @@ var Campground = {
             ).success(function(data){
                 callback(data);
             }).fail(function(){
-                $('#statusMessage').html('Oops, Bandcamp failed to resolve that URL. Make sure you entered a track or album URL.');
+                window.alert('Oops, Bandcamp failed to resolve that URL. Make sure you entered a track or album URL.');
             });
         },
         getBandData: function(band_id, callback){
@@ -59,7 +59,7 @@ var Campground = {
             ).success(function(data){
                 callback(data);
             }).fail(function(){
-                $('#statusMessage').html('Failed to retrieve band data.');
+                window.alert('Failed to retrieve band data.');
             });
         },
         getAlbumData: function(album_id, callback){
@@ -71,7 +71,7 @@ var Campground = {
             ).success(function(data){
                 callback(data);
             }).fail(function(){
-                $('#statusMessage').html('Failed to retrieve album data');
+                window.alert('Failed to retrieve album data');
             });
         },
         getTrackData: function(track_id, callback){
@@ -83,12 +83,9 @@ var Campground = {
             ).success(function(data){
                 callback(data);
             }).fail(function(){
-                $('#statusMessage').html('Failed to retrieve track data');
+                window.alert('Failed to retrieve track data');
             });
         }
-    },
-    clearStatus: function(){
-        $('#statusMessage').html('Enter a URL');
     },
     loadPlaylist: function(){
         var savedPlaylist = JSON.parse(localStorage.playlist || '[]');
@@ -187,12 +184,11 @@ var Campground = {
                     }
                 }.bind(this));
             }else{
-                $('#statusMessage').html('Bandcamp rejected the URL');
+                window.alert('Bandcamp rejected the URL');
             }
         }.bind(this));
     },
     renderPlaylist: function(){
-        this.clearStatus();
         $('.playlist').html('');
 
         this.playlist.forEach(function(track){

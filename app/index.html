@@ -11,7 +11,7 @@
         <!-- bower:css -->
         <!-- endbower -->
         <!-- endbuild -->
-
+        <link href='http://fonts.googleapis.com/css?family=Sanchez' rel='stylesheet' type='text/css'>
         <script src="../bower_components/handlebars/handlebars.min.js"></script>
 
         <!-- build:css(.tmp) styles/main.css -->
@@ -31,7 +31,6 @@
                 <div>
                     <input id="inpt_trackOrAlbum" type="text" onkeyup="Campground.clearStatus()" placeholder="Bandcamp track/album URL">
                     <button onClick="Campground.getTrackOrAlbum()">Fetch track(s)</button>
-                    <span class="status" id="statusMessage">Enter a URL</span>
                 </div>
                 <div>
                     <button onClick="Campground.shufflePlaylist()">Shuffle</button>
@@ -55,6 +54,7 @@
                     <audio src="{{ track_streaming_url }}" controls preload="none" onEnded="Campground.nextTrack()">
                         <p>Your browser doesn't seem to support the HTML5 audio element</p>
                     </audio>
+                    <div class="remove" title="Remove from playlist" onClick="Campground.removeTrack({{ track_id }})">&times;</div>
                 </article>
             </template>
 
