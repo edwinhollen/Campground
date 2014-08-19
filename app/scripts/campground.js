@@ -32,10 +32,10 @@ var Track = function(trackData, albumData, bandData){
     this.track_title = trackData.title;
     this.track_streaming_url = trackData.streaming_url;
     this.track_url = trackData.url;
-    this.album_url = albumData.url;
+    this.album_url = albumData.url || trackData.url;
     this.album_title = albumData.title;
-    this.album_art_small_url = albumData.small_art_url || null;
-    this.album_art_large_url = albumData.large_art_url || null;
+    this.album_art_small_url = albumData.small_art_url || trackData.small_art_url || null;
+    this.album_art_large_url = albumData.large_art_url || trackData.large_art_url || null;
 
     this.band_url = bandData.url;
     this.band_title = bandData.name;
@@ -149,14 +149,11 @@ var Campground = {
     },
     nextTrack: function(){
         // get key of current track
-        console.log('nextTrack');
         $('.playlist .active').removeClass('active');
         for(var k in this.playlist){
             k = parseInt(k);
             if(this.playlist[k].track_id === this.currentTrackId){
-                console.log('Current '+this.currentTrackId);
                 this.currentTrackId = (this.playlist[parseInt(k)+1] || this.playlist[0]).track_id;
-                console.log('Next '+this.currentTrackId);
                 this.playPause();
                 this.playPause();
                 return;
