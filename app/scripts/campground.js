@@ -178,6 +178,17 @@ var Campground = {
             });
         }.bind(that));
     },
+    addTrackToPlaylist: function(track_id, bandData){
+        //console.log('Adding track to playlist', track_id, bandData);
+        // get track data
+        var that = this;
+        this.api.getTrackData(track_id, function(trackData){
+            // get album data
+            this.api.getAlbumData(trackData.album_id, function(albumData){
+                that.playlist.push(new Track(trackData, albumData, bandData));
+            });
+        }.bind(that));
+    },
     volumeUp: function(){
         $('audio').each(function(){
             if(this.volume < 1){
@@ -212,17 +223,6 @@ var Campground = {
     },
     renderVolume: function(){
         $('#volumeLevel').html($('audio')[0].volume*100 + '%');
-    },
-    addTrackToPlaylist: function(track_id, bandData){
-        //console.log('Adding track to playlist', track_id, bandData);
-        // get track data
-        var that = this;
-        this.api.getTrackData(track_id, function(trackData){
-            // get album data
-            this.api.getAlbumData(trackData.album_id, function(albumData){
-                this.playlist.push(new Track(trackData, albumData, bandData));
-            });
-        }.bind(that));
     },
     getTrackOrAlbum: function(str){
         this.api.getUrlData(str.trim(), function(urlData){
