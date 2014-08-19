@@ -14,13 +14,9 @@
         <!-- endbuild -->
         <link href='http://fonts.googleapis.com/css?family=Sanchez' rel='stylesheet' type='text/css'>
 
-        <script>
-        /*
         <!-- build:css(.tmp) styles/main.css -->
         <link rel="stylesheet" href="styles/main.css">
         <!-- endbuild -->
-        */
-        </script>
     </head>
     <body>
         <!--[if lt IE 10]>
@@ -28,106 +24,76 @@
         <![endif]-->
 
         <div class="container">
-            <div class="row">
-                <div class="col-xs-12">
-                    <h1>Campground</h1>
-                </div>
+            <div class="page-header">
+                <h1>Campground <small>Make a Bandcamp playlist</small></h1>
             </div>
             <div class="row">
                 <div class="col-xs-5">
-                    <input id="txt_trackOrAlbum" type="text" class="form-control" placeholder="Enter a Bandcamp track/album URL">
+                    <div class="input-group">
+                        <input id="txt_trackOrAlbum" type="text" class="form-control" placeholder="Enter a Bandcamp track/album URL">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" onClick="Campground.getTrackOrAlbum(document.querySelector('#txt_trackOrAlbum').value)">Add track(s)</button>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-xs-7">
-                    <button class="btn btn-default" onClick="Campground.getTrackOrAlbum(document.querySelector('#txt_trackOrAlbum').value)">Add track(s)</button>
-                    <button class="btn btn-default">Play</button>
-                    <button class="btn btn-default">Next song</button>
-                    <button class="btn btn-default">Clear playlist</button>
+
+                    <div class="btn-group">
+                        <button id="btn_playPause" class="btn btn-default" onClick="Campground.playPause()">Play</button>
+                        <button class="btn btn-default" onClick="Campground.nextTrack()">Next track</button>
+                        <button class="btn btn-default" onClick="Campground.shufflePlaylist()">Shuffle</button>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-default" onClick="Campground.volumeDown()" title="Volume down"><span class="glyphicon glyphicon-volume-down"></span></button>
+                        <button id="volumeLevel" class="btn btn-default" onClick="Campground.volumeMute()" title="Mute">&nbsp;</button>
+                        <button class="btn btn-default" onClick="Campground.volumeUp()" title="Volume up"><span class="glyphicon glyphicon-volume-up"></span></button>
+                    </div>
+                        <button class="btn btn-default" onClick="Campground.clearPlaylist()">Clear playlist</button>
                 </div>
             </div>
+
+            <hr>
 
             <div class="row">
-                <table class="table table-condensed">
-                    <thead>
-                        <tr>
-                            <th>Track title</th>
-                            <th>Band</th>
-                            <th>Album</th>
-                            <th>Meta</th>
-                        </tr>
-                    </thead>
-                    <tbody class="playlist"></tbody>
-                    <template id="trackTemplate">
-                        <tr data-trackid="{{ track_id }}">
-                            <td>{{ track_title }}</td>
-                            <td>{{ band_title }}</td>
-                            <td>{{ album_title }}</td>
-                            <td>
-                                <button title="Remove this track" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-trash"></span></button>
-                            </td>
-                    </template>
-                </table>
-            </div>
-        </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        <!--
-        <header class="main">
-            <h1>Campground</h1>
-        </header>
-        <div class="container">
-            <div class="controls">
-                <input class="trackOrAlbum" id="inpt_trackOrAlbum" type="text"  placeholder="Enter a Bandcamp track/album URL" autofocus>
-                <button class="fetchTracks" onClick="Campground.getTrackOrAlbum()">Fetch track(s)</button>
-
-                <div class="forPlaylist">
-                    <button id="btn_playPause" onClick="Campground.playPause()">Play</button>
-                    <button onClick="Campground.nextTrack()">Next track</button>
-                    <button onClick="Campground.shufflePlaylist()">Shuffle</button>
-                    <button onClick="Campground.clearPlaylist()">Clear playlist</button>
-
+                <div class="col-xs-12">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th width="5%"></th>
+                                <th>Track title</th>
+                                <th>Band</th>
+                                <th>Album</th>
+                                <th>Meta</th>
+                            </tr>
+                        </thead>
+                        <tbody class="playlist"></tbody>
+                        <template id="trackTemplate">
+                            <tr data-trackid="{{ track_id }}">
+                                <td><img class="img-responsive" src="{{ album_art_small_url }}" alt="{{ album_title }}"></td>
+                                <td><a href="{{ track_url }}" target="_blank">{{ track_title }}</a></td>
+                                <td><a href="{{ band_url }}" target="_blank">{{ band_title }}</a></td>
+                                <td>
+                                    <a href="{{ album_url }}" target="_blank">{{ album_title }}</a>
+                                </td>
+                                <td>
+                                    <audio style="visibility:hidden" src="{{ track_streaming_url }}" preload="none"></audio>
+                                    <button title="Remove this track" class="btn btn-default btn-xs" onClick="Campground.removeTrack({{ track_id }})"><span class="glyphicon glyphicon-trash"></span></button>
+                                </td>
+                        </template>
+                    </table>
                 </div>
             </div>
 
-            <div class="playlist"></div>
+            <hr>
 
-            <template id="trackTemplate">
-                <article class="track" data-trackid="{{ track_id }}">
-                    <img class="art" src="{{ album_art_small_url }}" />
-                    <div class="title">{{ track_title }}</div>
-                    <div>
-                        by <a href="{{ band_url }}">{{ band_name }}</a> on album <a href="{{ album_url }}">{{ album_title }}</a>
-                    </div>
-                    <audio src="{{ track_streaming_url }}" controls preload="none" onEnded="Campground.nextTrack()">
-                        <p>Your browser doesn't seem to support the HTML5 audio element</p>
-                    </audio>
-                    <div class="remove" title="Remove from playlist" onClick="Campground.removeTrack({{ track_id }})">&times;</div>
-                </article>
-            </template>
-
-            <footer class="main">
-                <p>Campground is free and open-source.</p>
-                <p>Designed and developed <span class="fancy">with love</span> by Edwin Hollen.</p>
-                <p>
-                    <a href="https://github.com/edwinhollen/Campground">Campground on Github</a>
-                    -
-                    <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=WG29YXBCC32C8&lc=US&item_name=Edwin%20Hollen&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted">Donate</a>
+            <div class="row">
+                <div class="col-xs-12">
+                    <p class="text-center"><em>Campground is free and <a href="https://github.com/edwinhollen/Campground/">open-source</a></em></p>
+                    <p class="text-center"><em>Developed with love by Edwin Hollen <small><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=WG29YXBCC32C8&lc=US&item_name=Edwin%20Hollen&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted">(Donate)</a></em></small>
                     </p>
-            </footer>
+                </div>
+            </div>
         </div>
-
-    -->
 
         <!-- build:js scripts/vendor.js -->
         <!-- bower:js -->

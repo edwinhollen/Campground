@@ -9,6 +9,12 @@ Array.prototype.shuffle = function() {
     }
 };
 
+Array.prototype.clear = function() {
+    while (this.length > 0) {
+        this.pop();
+    }
+};
+
 var Track = function(trackData, albumData, bandData){
     /*
     console.log(
@@ -38,6 +44,7 @@ var Track = function(trackData, albumData, bandData){
 var Campground = {
     playlist: [],
     currentTrackId: null,
+    lastVolume: null,
     api: {
         api_key: 'vatnajokull',
         getUrlData: function(url, callback){
@@ -107,9 +114,8 @@ var Campground = {
     },
     clearPlaylist: function(){
         if(window.confirm('Do you really want to clear the playlist?')){
-            while(this.playlist.length > 0){
-                this.playlist.pop();
-            }
+            console.log('Clearing');
+            this.playlist.clear();
         }
 
     },
@@ -119,8 +125,8 @@ var Campground = {
             this.currentTrackId = this.playlist[0].track_id;
         }
         var currentTrackElement = $('[data-trackid="'+this.currentTrackId+'"]');
-        currentTrackElement.children('audio')[0].play();
-        currentTrackElement.addClass('playing');
+        currentTrackElement.find('audio')[0].play();
+        currentTrackElement.addClass('active');
         $('#btn_playPause').html('Pause');
     },
     pause: function(){
@@ -144,7 +150,7 @@ var Campground = {
     nextTrack: function(){
         // get key of current track
         console.log('nextTrack');
-        $('.playing').removeClass('playing');
+        $('.playlist .active').removeClass('active');
         for(var k in this.playlist){
             k = parseInt(k);
             if(this.playlist[k].track_id === this.currentTrackId){
@@ -172,7 +178,41 @@ var Campground = {
             });
         }.bind(that));
     },
-
+    volumeUp: function(){
+        $('audio').each(function(){
+            if(this.volume < 1){
+                this.volume += 0.1;
+                this.volume = Math.round(this.volume * 100)/100;
+            }
+        });
+        this.renderVolume();
+    },
+    volumeDown: function(){
+        $('audio').each(function(){
+            if(this.volume > 0){
+                this.volume -= 0.1;
+                this.volume = Math.round(this.volume * 100)/100;
+            }
+        });
+        this.renderVolume();
+    },
+    volumeMute: function(){
+        var newVolume;
+        if(this.lastVolume === null){
+            this.lastVolume = $('audio')[0].volume;
+            newVolume = 0.0;
+        }else{
+            newVolume = this.lastVolume;
+            this.lastVolume = null;
+        }
+        $('audio').each(function(){
+            this.volume = newVolume;
+        });
+        this.renderVolume();
+    },
+    renderVolume: function(){
+        $('#volumeLevel').html($('audio')[0].volume*100 + '%');
+    },
     addTrackToPlaylist: function(track_id, bandData){
         //console.log('Adding track to playlist', track_id, bandData);
         // get track data
@@ -201,11 +241,10 @@ var Campground = {
         }.bind(this));
     },
     renderPlaylist: function(){
-        $('.playlist tbody').html('');
+        $('.playlist').html('');
         this.playlist.forEach(function(track){
             $('.playlist').append(Handlebars.compile($('#trackTemplate').html())(track));
         });
-
         this.savePlaylist();
     }
 };
