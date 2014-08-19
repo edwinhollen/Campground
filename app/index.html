@@ -4,24 +4,85 @@
         <meta charset="utf-8">
         <title>Campground</title>
         <meta name="description" content="">
-        <meta name="viewport" content="width=device-width">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="shortcut icon" href="/favicon.ico">
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
         <!-- build:css styles/vendor.css -->
         <!-- bower:css -->
+        <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css" />
         <!-- endbower -->
         <!-- endbuild -->
         <link href='http://fonts.googleapis.com/css?family=Sanchez' rel='stylesheet' type='text/css'>
 
+        <script>
+        /*
         <!-- build:css(.tmp) styles/main.css -->
         <link rel="stylesheet" href="styles/main.css">
         <!-- endbuild -->
+        */
+        </script>
     </head>
     <body>
         <!--[if lt IE 10]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <h1>Campground</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-5">
+                    <input id="txt_trackOrAlbum" type="text" class="form-control" placeholder="Enter a Bandcamp track/album URL">
+                </div>
+                <div class="col-xs-7">
+                    <button class="btn btn-default" onClick="Campground.getTrackOrAlbum(document.querySelector('#txt_trackOrAlbum').value)">Add track(s)</button>
+                    <button class="btn btn-default">Play</button>
+                    <button class="btn btn-default">Next song</button>
+                    <button class="btn btn-default">Clear playlist</button>
+                </div>
+            </div>
+
+            <div class="row">
+                <table class="table table-condensed">
+                    <thead>
+                        <tr>
+                            <th>Track title</th>
+                            <th>Band</th>
+                            <th>Album</th>
+                            <th>Meta</th>
+                        </tr>
+                    </thead>
+                    <tbody class="playlist"></tbody>
+                    <template id="trackTemplate">
+                        <tr data-trackid="{{ track_id }}">
+                            <td>{{ track_title }}</td>
+                            <td>{{ band_title }}</td>
+                            <td>{{ album_title }}</td>
+                            <td>
+                                <button title="Remove this track" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-trash"></span></button>
+                            </td>
+                    </template>
+                </table>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <!--
         <header class="main">
             <h1>Campground</h1>
         </header>
@@ -61,16 +122,18 @@
                 <p>
                     <a href="https://github.com/edwinhollen/Campground">Campground on Github</a>
                     -
-                    <!-- donation link -->
                     <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=WG29YXBCC32C8&lc=US&item_name=Edwin%20Hollen&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted">Donate</a>
                     </p>
             </footer>
         </div>
 
+    -->
+
         <!-- build:js scripts/vendor.js -->
         <!-- bower:js -->
-        <script src="../bower_components/handlebars/handlebars.js"></script>
         <script src="../bower_components/jquery/dist/jquery.js"></script>
+        <script src="../bower_components/handlebars/handlebars.js"></script>
+        <script src="../bower_components/bootstrap/dist/js/bootstrap.js"></script>
         <!-- endbower -->
         <!-- endbuild -->
 

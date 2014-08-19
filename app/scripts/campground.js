@@ -10,12 +10,14 @@ Array.prototype.shuffle = function() {
 };
 
 var Track = function(trackData, albumData, bandData){
+    /*
     console.log(
         'New track', '\n',
         'Track data', trackData,
         'Album data', albumData,
         'Band data', bandData
     );
+    */
 
     this.track_id = trackData.track_id;
     this.album_id = trackData.album_id;
@@ -30,7 +32,7 @@ var Track = function(trackData, albumData, bandData){
     this.album_art_large_url = albumData.large_art_url || null;
 
     this.band_url = bandData.url;
-    this.band_name = bandData.name;
+    this.band_title = bandData.name;
 };
 
 var Campground = {
@@ -182,9 +184,8 @@ var Campground = {
             });
         }.bind(that));
     },
-    getTrackOrAlbum: function(){
-        var str = $('#inpt_trackOrAlbum').val().trim();
-        this.api.getUrlData(str, function(urlData){
+    getTrackOrAlbum: function(str){
+        this.api.getUrlData(str.trim(), function(urlData){
             if(urlData.band_id){
                 // get band data
                 this.api.getBandData(urlData.band_id, function(bandData){
@@ -200,11 +201,9 @@ var Campground = {
         }.bind(this));
     },
     renderPlaylist: function(){
-        $('.playlist').html('');
-
+        $('.playlist tbody').html('');
         this.playlist.forEach(function(track){
-            var compiledTrack = Handlebars.compile($('#trackTemplate').html())(track);
-            $('.playlist').append(compiledTrack);
+            $('.playlist').append(Handlebars.compile($('#trackTemplate').html())(track));
         });
 
         this.savePlaylist();
