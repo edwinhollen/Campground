@@ -128,6 +128,12 @@ var Campground = {
         currentTrackElement.find('audio')[0].play();
         currentTrackElement.addClass('active');
         $('#btn_playPause').html('Pause');
+
+        this.playlist.forEach(function(track){
+            if(this.currentTrackId === track.track_id){
+                document.title = track.track_title + ' - ' + track.band_title;
+            }
+        }.bind(this));
     },
     pause: function(){
         this.isPlaying = false;
@@ -238,6 +244,7 @@ var Campground = {
         }.bind(this));
     },
     renderPlaylist: function(){
+        document.title = 'Campground';
         $('.playlist').html('');
         this.playlist.forEach(function(track){
             $('.playlist').append(Handlebars.compile($('#trackTemplate').html())(track));
